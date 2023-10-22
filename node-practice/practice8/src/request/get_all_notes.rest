@@ -1,0 +1,28 @@
+GET http://localhost:3001/
+
+###
+GET http://localhost:3001/api/notes/3
+
+###
+GET http://localhost:3001/api/notes
+
+###
+DELETE http://localhost:3001/api/notes/4
+
+###
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "VSC rest client is easy way to work",
+  "important": true
+}
+
+
+
+
+
+
+
+
+
