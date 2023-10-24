@@ -22,7 +22,7 @@
     },
     {
       "content": "Nota 2",
-      "important": false,
+      "important": true,
       "id": 5
     }
   ]
