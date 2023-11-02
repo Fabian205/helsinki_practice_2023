@@ -1,0 +1,25 @@
+GET HTTP://localhost:3001/api/notes
+
+###
+GET http://localhost:3001/api/notes/653e76eb454793da0bc97386
+
+###
+DELETE http://localhost:3001/api/notes/65439742c4c391a09ade61fb
+
+###
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "Other content is available7",
+  "important": true
+}
+
+###
+PUT http://localhost:3001/api/notes/6543972dc4c391a09ade61f9
+Content-Type: application/json
+
+{
+  "content": "Other test content is available",
+  "important": false
+}
