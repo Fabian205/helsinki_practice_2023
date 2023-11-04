@@ -138,39 +138,38 @@ console.log(`Server running on port ${PORT}`) */
 /*---------------------------------------------------
  |                      STEP 5                      |                        
  ---------------------------------------------------*/
- 
- require('dotenv').config();
- const express = require('express');
- const app = express();
- const mongoose = require('mongoose')
- const Note = require('./models/note')
 
- app.use(express.json());
- 
- // DO NOT SAVE YOUR PASSWORD TO GITHUB!!
- const url = process.env.MONGO_DB_URI;
- mongoose.set('strictQuery',false)
- mongoose.connect(url)
- .then(result => {
-  console.log('connected to MongoDB')
-})
-.catch((error) => {
-  console.log('error connecting to MongoDB:', error.message)
+require('dotenv').config();
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose')
+const Note = require('./models/note')
+
+app.use(express.json());
+
+// DO NOT SAVE YOUR PASSWORD TO GITHUB!!
+const url = process.env.MONGO_DB_URI;
+mongoose.set('strictQuery', false)
+mongoose.connect(url)
+  .then(result => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
+
+app.get('/api/notes', (request, response) => {
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
 })
 
- app.get('/api/notes', (request, response) => {
-   Note.find({}).then(notes => {
-     response.json(notes)
-   })
- })
- 
- app.post('/api/notes', (request, response) => {
+/* app.post('/api/notes', (request, response) => {
   const body = request.body
 
   if (body.content === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
-
   const note = new Note({
     content: body.content,
     date: body.date,
@@ -180,12 +179,53 @@ console.log(`Server running on port ${PORT}`) */
   note.save().then(savedNote => {
     response.json(savedNote)
   })
-})
+}) */
+
+app.post('/api/notes', async (request, response) => {
+  const body = request.body;
+
+  if (body.content === undefined) {
+    return response.status(400).json({ error: 'content missing' });
+  }
+
+  try {
+    // Check if a note with the same content already exists
+    const existingNote = await Note.findOne({ content: body.content });
+
+    if (existingNote) {
+      return response.status(409).json({ error: 'Note with the same content already exists' });
+    }
+
+    const note = new Note({
+      content: body.content,
+      date: body.date,
+      important: body.important || false,
+    });
+
+    const savedNote = await note.save();
+    response.json(savedNote);
+  } catch (error) {
+    console.error('Error saving note:', error);
+    response.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 
 app.get('/api/notes/:id', (request, response) => {
-  Note.findById(request.params.id).then(note => {
-    response.json(note)
+  Note.findById(request.params.id)
+  .then(note => {
+    if (note) {        
+      response.json(note)      
+    } else {        
+      response.status(404).end()      
+    }
   })
+  .catch(error => {      
+    console.log(error)      
+    //response.status(500).end() 
+    response.status(400).send({ error: 'malformatted id' })
+  })
+  
 })
 
 app.delete('/api/notes/:id', async (req, res) => {
@@ -227,9 +267,8 @@ app.put('/api/notes/:id', async (req, res) => {
   }
 });
 
- const PORT = process.env.PORT || 3001
- app.listen(PORT)
- console.log(`Server running on port ${PORT}`)
+const PORT = process.env.PORT || 3001
+app.listen(PORT)
+console.log(`Server running on port ${PORT}`)
 
 
- 
