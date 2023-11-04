@@ -164,7 +164,7 @@ console.log(`Server running on port ${PORT}`) */
    })
  })
  
- app.post('/api/notes', (request, response) => {
+ /*app.post('/api/notes', (request, response) => {
   const body = request.body
 
   if (body.content === undefined) {
@@ -180,12 +180,58 @@ console.log(`Server running on port ${PORT}`) */
   note.save().then(savedNote => {
     response.json(savedNote)
   })
-})
+})*/
 
-app.get('/api/notes/:id', (request, response) => {
+app.post('/api/notes', async (request, response) => {
+  const body = request.body;
+
+  if (body.content === undefined) {
+    return response.status(400).json({ error: 'content missing' });
+  }
+
+  try {
+    // Check if a note with the same content already exists
+    const existingNote = await Note.findOne({ content: body.content });
+
+    if (existingNote) {
+      return response.status(409).json({ error: 'Note with the same content already exists' });
+    }
+
+    const note = new Note({
+      content: body.content,
+      date: body.date,
+      important: body.important || false,
+    });
+
+    const savedNote = await note.save();
+    response.json(savedNote);
+  } catch (error) {
+    console.error('Error saving note:', error);
+    response.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+/*app.get('/api/notes/:id', (request, response) => {
   Note.findById(request.params.id).then(note => {
     response.json(note)
   })
+})*/
+
+app.get('/api/notes/:id', (request, response) => {
+  Note.findById(request.params.id)
+  .then(note => {
+    if (note) {        
+      response.json(note)      
+    } else {        
+      response.status(404).end()      
+    }
+  })
+  .catch(error => {      
+    console.log(error)      
+    //response.status(500).end() 
+    response.status(400).send({ error: 'malformatted id' })
+  })
+  
 })
 
 app.delete('/api/notes/:id', async (req, res) => {
