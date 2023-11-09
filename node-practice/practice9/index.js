@@ -158,33 +158,14 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
-app.get('/api/notes', (request, response) => {
-  Note.find({}).then(notes => {
-    response.json(notes)
-  })
-})
-
-//// SAVE ALL NOTES    /////////////
-//app.post('/api/notes', (request, response) => {
-  //const body = request.body
-
-  //if (body.content === undefined) {
-    //return response.status(400).json({ error: 'content missing' })
-  //}
-  //const note = new Note({
-    //content: body.content,
-    //date: body.date,
-    //important: body.important || false,
-  //})
-
-  //note.save().then(savedNote => {
-    //response.json(savedNote)
-  //})
-//})
-
-//SAVE NOTES THAT DO NOT YET EXIS IN THE DB
-app.post('/api/notes', async (request, response) => {
-  const body = request.body;
+ app.get('/api/notes', (request, response) => {
+   Note.find({}).then(notes => {
+     response.json(notes)
+   })
+ })
+ 
+ app.post('/api/notes', (request, response) => {
+  const body = request.body
 
   if (body.content === undefined) {
     return response.status(400).json({ error: 'content missing' });
@@ -204,30 +185,15 @@ app.post('/api/notes', async (request, response) => {
       important: body.important || false,
     });
 
-    const savedNote = await note.save();
-    response.json(savedNote);
-  } catch (error) {
-    console.error('Error saving note:', error);
-    response.status(500).json({ message: 'Internal Server Error' });
-  }
-});
-
+  note.save().then(savedNote => {
+    response.json(savedNote)
+  })
+})
 
 app.get('/api/notes/:id', (request, response) => {
-  Note.findById(request.params.id)
-  .then(note => {
-    if (note) {        
-      response.json(note)      
-    } else {        
-      response.status(404).end()      
-    }
+  Note.findById(request.params.id).then(note => {
+    response.json(note)
   })
-  .catch(error => {      
-    console.log(error)      
-    //response.status(500).end() 
-    response.status(400).send({ error: 'malformatted id' })
-  })
-  
 })
 
 app.delete('/api/notes/:id', async (req, res) => {
@@ -431,7 +397,9 @@ app.put('/api/notes/:id', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+ const PORT = process.env.PORT || 3001
+ app.listen(PORT)
+ console.log(`Server running on port ${PORT}`)
 
+
+ 
