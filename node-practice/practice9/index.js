@@ -310,12 +310,12 @@ app.post('/api/notes', async (request, response, next) => {
   }
 });
 
-const unknownEndpoint = (request, response) => {
+/* const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
 // handler of requests with unknown endpoint
-app.use(unknownEndpoint)
+app.use(unknownEndpoint) */
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
