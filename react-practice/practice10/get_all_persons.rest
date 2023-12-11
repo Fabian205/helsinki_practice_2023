@@ -1,0 +1,26 @@
+
+GET http://localhost:3000/
+
+###
+GET http://localhost:3000/api/persons
+
+###
+DELETE http://localhost:3000/api/persons/65649ab9d77bd7e38b9622a0
+
+###
+PUT http://localhost:3000/api/persons/65649ab9d77bd7e38b9622a0
+Content-Type: application/json
+
+{
+  "name": "Rodrigo Parra",
+  "number": "0998264721"
+}
+
+###
+POST http://localhost:3000/api/persons
+Content-Type: application/json
+
+{
+  "name": "Ju",
+  "number": "0998264720"
+}

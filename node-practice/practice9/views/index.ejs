@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App Node.js con Express y MongoDB</title>
+  </head>
+  <body>
+    <h2>Notes</h2>
+    <label for="filter">Filter shown with</label>
+    <input type="text" id="filter" name="filter" value="" oninput="filterNotes()" />
+  
+    <!-- <ul>
+      <% notes.forEach(note => { %>
+        <li><%= note.content %></li>
+      <% }); %>
+    </ul> -->
+  
+    <script>
+      function filterNotes() {
+        const filterInput = document.getElementById('filter');
+        const filterValue = filterInput.value;
+  
+        window.location.href = `/?filter=${filterValue}`;
+      }
+    </script>
+
+
+    <h2>add a new note</h2>
+    <form action="/api/notes" method="post">
+      <div>
+        <label for="content">note:</label>
+        <input type="text" id="content" name="content" value="" />
+      </div>
+      <input type="submit" value="Add" />
+    </form>
+    <h2>Notes List</h2>
+    <ul>
+      <% notes.forEach(note => { %>
+      <p><%= note.content %></p>
+      <% }); %>
+    </ul>
+  </body>
+</html>

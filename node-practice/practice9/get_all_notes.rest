@@ -1,10 +1,11 @@
+
 GET HTTP://localhost:3001/api/notes
 
 ###
-GET http://localhost:3001/api/notes/655006116bdede2bdf6ed9ca
+GET http://localhost:3001/api/notes/9
 
 ###
-DELETE http://localhost:3001/api/notes/65455056cc67b944bbab8197
+DELETE http://localhost:3001/api/notes/655006116bdede2bdf6ed9ca
 
 ###
 POST http://localhost:3001/api/notes
@@ -20,6 +21,6 @@ PUT http://localhost:3001/api/notes/655006116bdede2bdf6ed9ca
 Content-Type: application/json
 
 {
-  "content": "Other update test2 content is available106",
+  "content": "Other update test5 content is available107",
   "important": false
 }

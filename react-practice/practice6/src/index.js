@@ -60,3 +60,8 @@ console.log(promise2) */
   const notes = response.data
   ReactDOM.createRoot(document.getElementById('root')).render(<App notes={notes} />)
 }) */
+
+
+//2 terminals 
+//npm start
+//npm start server
