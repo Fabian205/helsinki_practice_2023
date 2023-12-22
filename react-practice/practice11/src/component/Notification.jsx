@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types'
+
 const Notification = ({ message, messageError }) => {
   if (message === null) {
-    return null;
+    return null
   }
 
   return (
@@ -13,10 +15,12 @@ const Notification = ({ message, messageError }) => {
         <p className="texterror">{messageError}</p>
       </div>}
     </>
-  );
-};
+  )
+}
 
-export default Notification;
+Notification.propTypes = {
+  message: PropTypes.string.isRequired,
+  messageError: PropTypes.string.isRequired
+}
 
-
-
+export default Notification

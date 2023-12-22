@@ -203,4 +203,7 @@ export default App
 // JavaScript
 
 // 'no-unused-vars': 'error'
+// npx eslint src/App.jsx
+// npx eslint server.js --fix
+// npx eslint src/**/*.js
 /* eslint-enable no-warning-comments */
